@@ -31,7 +31,7 @@
 # scores, moves, reports = main_play([team1]*3+[example1])
 # section0, section1, section2, section3 = reports
 #######
-import random, os.path, time
+import random, os.path, time, re
 from os import listdir as ls
 # Required for reload() in Python 3
 import importlib
@@ -43,7 +43,7 @@ modules=[]
 
 files = ls()
 for f in ls():
-    if "team_" in f:
+    if re.match("^[Tt][Ee][Aa][Mm]_.*", f):
         mod = os.path.splitext(f)[0]
         # The module is NOT THE SAME as the STRING
         my_mod = importlib.import_module(mod)
