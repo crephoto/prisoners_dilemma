@@ -35,6 +35,8 @@ import random, os.path, time, re
 from os import listdir as ls
 # Required for reload() in Python 3
 import importlib
+# Try graphing results?
+import matplotlib.pyplot as plt
 
 # Add your team to the import statement below
 # import example0, example1, example2, example3
@@ -52,17 +54,17 @@ for f in ls():
 
 #Dumb Bots
 
-#collude = example0
-import example0
-modules.append(example0)
+# #collude = example0
+# import example0
+# modules.append(example0)
 
-#betray = example1
-import example1
-modules.append(example1)
+# #betray = example1
+# import example1
+# modules.append(example1)
 
-#alternate = example2
-import example2
-modules.append(example2)
+# #alternate = example2
+# import example2
+# modules.append(example2)
 
 '''
 Leave the above uncommented for the distribution to students, but 
@@ -207,11 +209,7 @@ def play_round(player1, player2, score1, score2, moves1, moves2):
         # Both players betray; get punishment.   
         score1 += PUNISHMENT
         score2 += PUNISHMENT     
-    else:
-        # Both players get the "error score" if someone's code returns an improper action.
-        # That's not fair! I changed this so ONLY the error bot is penalized for bad code
-        #score1 += ERROR
-        #score2 += ERROR
+    else: # One of the players returned an invalid value (not ('b' or 'c'))
 
         if action1 not in 'bc':
             score1 += ERROR
@@ -240,7 +238,15 @@ def make_reports(modules, scores, moves):
     section0 = make_section0(modules, scores)
     section1 = make_section1(modules, scores)
     section2 = make_section2(modules, scores)
-    
+
+    colors = ['#FF0000', '#00FF00', '#0000FF', '#00FFFF', '#FF00FF', '#7F00FF', '#FF007F', '#7F0000']
+    fig, ax = plt.subplots(1,1)
+    for player in scores:
+      ax.plot(scores, player, random.choice(colors))
+
+    # Update the title string to use the name1 and name2 variables
+    ax.set_title('Average Player Scores')
+#    plt.show()
     section3 = []
     for index in range(len(modules)):
         section3.append(make_section3(modules, moves, scores, index))
@@ -327,7 +333,7 @@ def make_section2(modules, scores):
     for index in range(len(modules)):
         section2_list.append((modules[index].team_name,
                               'P'+str(index),
-                              str(int(sum(scores[index])/len(modules))),
+                              str(int(sum(scores[index])/(len(modules)-1))),
                               str(modules[index].strategy_name)))
 #    print(section2_list)
     section2_list.sort(key=lambda x: int(x[2]), reverse=True)
